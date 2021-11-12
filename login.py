@@ -7,7 +7,39 @@ class Login:
         self.ventana = Tk()
         self.usuario = ''
         self.password = ''
+        self.codigo = 'resetPass'
+        self.passwordRoot = '1234'
         self.usuarioVerificado = False
+
+    def ventanaPassword(self):
+        usuario = StringVar()
+        codigo = StringVar()
+
+        def cancelar():
+            usuario.set('')
+            codigo.set('')
+
+        def salir():
+            self.ventana.destroy()
+        
+        def verificar():
+            if(usuario.get() == 'root' and codigo.get() == self.codigo):
+                self.passwordRoot = 'abcde'
+                messagebox.showinfo(title="Código correcto", message=f"Nueva contraseña: {self.passwordRoot}")
+                cancelar()
+                self.ventanaLogin()
+
+        self.ventana.title('Recuperación de contraseña')
+        self.ventana.geometry("500x200")
+        Label(self.ventana, text="Digite su usuario", bg="#323232", fg="#fff",).grid(pady=5, row=0, column=0)
+        Label(self.ventana, text="Digite el código de recuperación", bg="#323232", fg="#fff",).grid( pady=5, row=1, column=0)
+        Entry(self.ventana, width=40, textvariable=usuario).grid(padx=5, row=0, column=2)
+        Entry(self.ventana, width=40, textvariable=codigo).grid(padx=5, row=1, column=2)
+    
+        Button(self.ventana, text="Salir", cursor="hand2", relief="flat", width="10", command=salir).grid(column=0, row=3)
+        Button(self.ventana, text="Cancelar", cursor="hand2", relief="flat", width="10", command=cancelar).grid(column=1, row=3)
+        Button(self.ventana, text="Generar nueva contraseña", cursor="hand2",relief="flat", width="25", bg="#5D00FF", command = verificar, fg="white").grid(column=2, row=3)
+        self.ventana.mainloop()
 
     def ventanaLogin(self):
         usuario = StringVar()
@@ -27,10 +59,11 @@ class Login:
             if(verificado == True):
                 #verificado
                 self.login()
+                cancelar()
             else: 
                 print('no verificado')
                 messagebox.showwarning(message="Escribe bien los datos", title="Ten en cuenta")  
-
+    
         self.ventana.title("Login")
         self.ventana.geometry("450x150")
         self.ventana.anchor("center")
@@ -43,7 +76,7 @@ class Login:
         Button(self.ventana, text="Salir", cursor="hand2", relief="flat", width="10", command=salir).grid(column=0, row=3)
         Button(self.ventana, text="Cancelar", cursor="hand2", relief="flat", width="10", command=cancelar).grid(column=1, row=3)
         Button(self.ventana, text="Ingresar", cursor="hand2",relief="flat", width="25", bg="#5D00FF", command = cambiarValores, fg="white").grid(column=2, row=3)
-        Button(self.ventana, text="¿Olvidó su contraseña?", cursor="hand2", relief="flat", bg="#323232", fg="white").grid(pady=5, column=0, columnspan=3, row=4)
+        Button(self.ventana, text="¿Olvidó su contraseña?", cursor="hand2", relief="flat", bg="#323232", fg="white", command=self.ventanaPassword).grid(pady=5, column=0, columnspan=3, row=4)
 
         self.ventana.mainloop()
 
@@ -54,7 +87,7 @@ class Login:
         else: return True
 
     def login(self):
-        if(self.usuario == 'root' and self.password == '1234'):
+        if(self.usuario == 'root' and self.password == self.passwordRoot):
             print('Login correcto')
             messagebox.showinfo(message='¡Login correcto!',title="Bienvenid@")
             self.usuarioVerificado = True
