@@ -1,6 +1,8 @@
 
 from tkinter import *
 from tkinter import messagebox
+
+from app import Aplication
 class Login:
 
     def __init__(self):
@@ -98,6 +100,8 @@ class Login:
             # y ejecutamos un método en esa clase que muestre la ventana asi como hice en el index.py
             # aplicacion.ventanaAplicacion()
             # y seguimos programando...
+
+            aplicacion = Aplication(self.usuario)
 
         else: 
             print("Login inválido")
