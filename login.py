@@ -67,7 +67,7 @@ class Login:
                 messagebox.showwarning(message="Escribe bien los datos", title="Ten en cuenta")  
     
         self.ventana.title("Login")
-        self.ventana.geometry("450x150")
+        self.ventana.geometry("650x150")
         self.ventana.anchor("center")
         self.ventana.config(bg="#323232")          # color de fondo, background   # relieve del root 
         Label(self.ventana, text="Digite su usuario", bg="#323232", fg="#fff",).grid(pady=5, row=0, column=0)
@@ -101,7 +101,8 @@ class Login:
             # aplicacion.ventanaAplicacion()
             # y seguimos programando...
 
-            aplicacion = Aplication(self.usuario)
+            self.ventana.withdraw()
+            aplicacion = Aplication(self.ventana, self.usuario)
 
         else: 
             print("Login inválido")
