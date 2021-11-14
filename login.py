@@ -32,14 +32,15 @@ class Login:
                 self.ventanaLogin()
 
         self.ventana.title('Recuperación de contraseña')
-        self.ventana.geometry("500x200")
-        Label(self.ventana, text="Digite su usuario", bg="#323232", fg="#fff",).grid(pady=5, row=0, column=0)
-        Label(self.ventana, text="Digite el código de recuperación", bg="#323232", fg="#fff",).grid( pady=5, row=1, column=0)
+        self.ventana.geometry("700x300")
+        self.ventana.anchor('center')
+        Label(self.ventana, text="Digite su usuario", bg="#323232", fg="#fff", font=("Verdana", 10)).grid(pady=5, row=0, column=0)
+        Label(self.ventana, text="Digite el código de recuperación", bg="#323232", fg="#fff", font=("Verdana", 10)).grid( pady=5, row=1, column=0)
         Entry(self.ventana, width=40, textvariable=usuario).grid(padx=5, row=0, column=2)
         Entry(self.ventana, width=40, textvariable=codigo).grid(padx=5, row=1, column=2)
     
-        Button(self.ventana, text="Salir", cursor="hand2", relief="flat", width="10", command=salir).grid(column=0, row=3)
-        Button(self.ventana, text="Cancelar", cursor="hand2", relief="flat", width="10", command=cancelar).grid(column=1, row=3)
+        Button(self.ventana, text="Salir", cursor="hand2", relief="flat", width="15", command=salir).grid(column=0, row=3)
+        Button(self.ventana, text="Cancelar", cursor="hand2", relief="flat", width="15", command=cancelar).grid(column=1, row=3)
         Button(self.ventana, text="Generar nueva contraseña", cursor="hand2",relief="flat", width="25", bg="#5D00FF", command = verificar, fg="white").grid(column=2, row=3)
         self.ventana.mainloop()
 
@@ -63,15 +64,14 @@ class Login:
                 self.login()
                 cancelar()
             else: 
-                print('no verificado')
                 messagebox.showwarning(message="Escribe bien los datos", title="Ten en cuenta")  
     
         self.ventana.title("Login")
         self.ventana.geometry("650x150")
         self.ventana.anchor("center")
         self.ventana.config(bg="#323232")          # color de fondo, background   # relieve del root 
-        Label(self.ventana, text="Digite su usuario", bg="#323232", fg="#fff",).grid(pady=5, row=0, column=0)
-        Label(self.ventana, text="Digite su contraseña", bg="#323232", fg="#fff",).grid( pady=5, row=1, column=0)
+        Label(self.ventana, text="Digite su usuario", bg="#323232", fg="#fff", font=("Verdana", 10)).grid(pady=5, row=0, column=0)
+        Label(self.ventana, text="Digite su contraseña", bg="#323232", fg="#fff", font=("Verdana", 10)).grid( pady=5, row=1, column=0)
         Entry(self.ventana, width=40, textvariable=usuario).grid(padx=5, row=0, column=2)
         Entry(self.ventana, width=40, show="*", textvariable=password).grid(padx=5, row=1, column=2)
     
@@ -83,27 +83,17 @@ class Login:
         self.ventana.mainloop()
 
     def verificarDatos(self):
-        print(self.usuario, self.password) 
         if self.usuario == '' or self.password == '':
             return False
         else: return True
 
     def login(self):
         if(self.usuario == 'root' and self.password == self.passwordRoot):
-            print('Login correcto')
             messagebox.showinfo(message='¡Login correcto!',title="Bienvenid@")
             self.usuarioVerificado = True
-
-            #En esta parte destruimos la ventana de login e instanciamos la ventana del menú o la de la aplicación como tal
-            # por ejemplo instanciamos y le pasamos el nombre del usuario (root)
-            # aplicacion = aplicacion(usuario)
-            # y ejecutamos un método en esa clase que muestre la ventana asi como hice en el index.py
-            # aplicacion.ventanaAplicacion()
-            # y seguimos programando...
 
             self.ventana.withdraw()
             aplicacion = Aplication(self.ventana, self.usuario)
 
         else: 
-            print("Login inválido")
             messagebox.showerror(message='Login inválido',title="Incorrecto")
