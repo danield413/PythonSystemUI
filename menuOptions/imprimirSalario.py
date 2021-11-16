@@ -1,5 +1,7 @@
 from tkinter import *
 from tkinter import messagebox
+import numpy
+import pandas as pd
 
 from nomina import Nomina
 #import matplotlib.pyplot as plt
@@ -12,18 +14,31 @@ def imprimirSalario(ventana, volverAtras):
 
     cedulaEmpleado = StringVar()
     n = Nomina()
-    
-    SUELDO_BASICO = 908526
-    HORA_EXTRA = 4731
-    #>100 ventas = 5%, >150 ventas 10% -> sueldo básico
-    BONIFICACIONES = 0
-    DESCUENTO_SALUD = 72750
-    AUXILIO_TRANSPORTE = 106454
-    INFORMACION_BANCARIA = ''
-    #Si trabaja < 180 horas, por cada hora no trabajada se descuenta 3785
-    #la pensión será del 3.8% del salario, el aumento es para la empresa, al empleado
-    #se le descuenta
-    #se aumenta 4% de ICBG
+    INFORMACION_BANCARIA = '**** - **** - ****'
+
+    def imprimirEnArchivo(pension, icbf, sueldo, auxTransporte, bonificaciones, nombre, telefono, cedula, codigoTrabajador, horasTrabajadas, horasExtrasTrabajadas, horasNoTrabajadas, numeroVentas, total ):
+        # sueldo es el sueldo básico: 908526
+        # total es el sueldo total ya calculado: xxxxxxxx
+        #Aquí se imprime en excel o pdf
+        #POR EJEMPLO ASÍ:
+        #NOMBRE: PEDRO SANCHEZ 
+        ##CC: 100239123
+        #TELEFONO: 9321923923
+        #CÓDIGO DE TRABAJADOR: 20192302-12
+        #INFORMACION BANCARIA: **********
+        #INFORMACIÓN LABORAL:
+            #HORAS TRABAJADAS: 200
+            #HORAS EXTRAS TRABAJADAS: 25
+            #HORAS NO TRABAJADAS: 10
+            #NÚMERO DE VENTAS: 267
+            #BONIFICACIONES: 125.000
+            #ICBF : 36.000
+            #PENSION: 45.000
+        
+        #TOTAL A PAGAR: $ 100.547
+
+
+        print('x')
 
     def calcularSalario(empleado, infoLaboral):
         horasTrabajadas = infoLaboral[0]
@@ -31,30 +46,47 @@ def imprimirSalario(ventana, volverAtras):
         horasNoTrabajadas = infoLaboral[2]
         numeroVentas = infoLaboral[3]
 
-        SUELDO_BASICO + (horasExtrasTrabajadas * HORA_EXTRA)
+        SUELDO_BASICO = 908526
+        sueldoInicial = 908526
+        HORA_EXTRA = 4731
+        bonificaciones = 0
+        DESCUENTO_SALUD = 72750
+        AUXILIO_TRANSPORTE = 106454
+
+        #se suman las horas extras, cada una por $4.731
+        sueldoInicial += (horasExtrasTrabajadas * HORA_EXTRA)
+        
+        #si el numero de ventas fue mayor a 150, se bonifica el 10%
         if(numeroVentas > 150): 
             #Mayores a 150
-            SUELDO_BASICO + (SUELDO_BASICO * .1)
+            bonificaciones + (sueldoInicial * .1)
+        #si el numero de ventas fue mayor a 100 y meno a 150, se bonifica el 5%
         elif(numeroVentas > 100 and numeroVentas < 150):
             #mayores de 100 y menores de 150
-            SUELDO_BASICO + (SUELDO_BASICO * .05)
+            bonificaciones + (sueldoInicial * .05)
+
+        #Se suman las bonitifaciones
+        sueldoInicial += bonificaciones
         
         #Se descuenta la salud y se da auxilio de transporte
-        SUELDO_BASICO - DESCUENTO_SALUD
-        SUELDO_BASICO + AUXILIO_TRANSPORTE
+        sueldoInicial -= DESCUENTO_SALUD
+        sueldoInicial += AUXILIO_TRANSPORTE
          
+        #Si las horas trabajadas son menores a 180 entonces se descuenta $3.875 por cada hora NO trabajada
         if(horasTrabajadas < 180): 
-            aDescontar = horasExtrasTrabajadas * 3785
-            SUELDO_BASICO - aDescontar
+            aDescontar = horasNoTrabajadas * 3785
+            sueldoInicial -= aDescontar
         
         #Se descuenta pensión
-        SUELDO_BASICO - (SUELDO_BASICO * 0.38)
+        pension = sueldoInicial * 0.38
+        sueldoInicial -= (sueldoInicial * 0.38)
 
         #Se aumenta el 4% del ICBF
-        SUELDO_BASICO + (SUELDO_BASICO * 0.04)
+        icbf = sueldoInicial * 0.04
+        sueldoInicial += (sueldoInicial * 0.04)
 
-        print('SUELDO:', SUELDO_BASICO)
-
+        imprimirEnPantalla(pension, icbf, SUELDO_BASICO, AUXILIO_TRANSPORTE, bonificaciones, sueldoInicial)
+        imprimirEnArchivo(pension, icbf, SUELDO_BASICO , AUXILIO_TRANSPORTE, bonificaciones, empleado[0], empleado[1], empleado[2], empleado[3], horasTrabajadas, horasExtrasTrabajadas, horasNoTrabajadas, numeroVentas, sueldoInicial)
     
     def buscar():
         #calcular salario
@@ -62,43 +94,42 @@ def imprimirSalario(ventana, volverAtras):
             if( n.verificarSiYaExiste(cedulaEmpleado.get()) ):
                 #Si el usuario buscado existe y tiene información laboral se hace lo siguiente
                 infoLaboral = n.obtenerInfoEmpleado(cedulaEmpleado.get())
-                if( len(infoLaboral) > 0 ):
+                if( type(infoLaboral) == numpy.ndarray):
+
                     empleadoBuscado = n.obtenerEmpleado(cedulaEmpleado.get())
                     msg = f"Emplead@ {empleadoBuscado[0]} - CC: {cedulaEmpleado.get()} encontrad@"
                     messagebox.showinfo(title="Empleado encontrado", message=msg)
-
                     calcularSalario( empleadoBuscado, infoLaboral )
                     
-
-                elif( not infoLaboral ):
+                elif( type(infoLaboral) == bool ):
                     msg = f"El empleado con cédula: {cedulaEmpleado.get()} no tiene información laboral todavía"
                     messagebox.showerror(title="Error", message=msg)
+        cedulaEmpleado.set('')
 
-    def imprimir():
-        #imprimir
-        print("imprimir")
+    def imprimirEnPantalla( pension, icbf, sueldoBasico, auxTrans, bonificaciones, total ):
+        Label(ventana, text="Pensión", bg="#323232", fg="#fff", font=("Verdana", 10)).grid(pady=5, row=3, column=0)
+        Label(ventana, text=f"$ {pension}", bg="#323232", fg="#fff", font=('Verdana', 10, 'bold')).grid(pady=5, row=3, column=1)
+        
+        Label(ventana, text="ICBF", bg="#323232", fg="#fff", font=("Verdana", 10)).grid(pady=5, row=4, column=0)
+        Label(ventana, text=f"$ {icbf}", bg="#323232", fg="#fff", font=('Verdana', 10, 'bold')).grid(pady=5, row=4, column=1)
+
+        Label(ventana, text="Sueldo", bg="#323232", fg="#fff", font=("Verdana", 10)).grid(pady=5, row=5, column=0)
+        Label(ventana, text=f"$ {sueldoBasico}", bg="#323232", fg="#fff", font=('Verdana', 10, 'bold')).grid(pady=5, row=5, column=1)
+
+        Label(ventana, text="Auxilio transporte", bg="#323232", fg="#fff", font=("Verdana", 10)).grid(pady=5, row=6, column=0)
+        Label(ventana, text=f"$ {auxTrans}", bg="#323232", fg="#fff", font=('Verdana', 10, 'bold')).grid(pady=5, row=6, column=1)
+
+        Label(ventana, text="Bonificaciones", bg="#323232", fg="#fff", font=("Verdana", 10)).grid(pady=5, row=7, column=0)
+        Label(ventana, text=f"$ {bonificaciones}", bg="#323232", fg="#fff", font=('Verdana', 10, 'bold')).grid(pady=5, row=7, column=1)
+
+        Label(ventana, text="Neto a pagar", bg="#323232", fg="#fff", font=("Verdana", 10)).grid(pady=5, row=7, column=0)
+        Label(ventana, text=f"$ {total}", bg="#323232", fg="#fff", font=('Verdana', 10, 'bold')).grid(pady=5, row=7, column=1)
 
     Label(ventana, text="Gastos Empresariales", bg="#323232", fg="white", font=("Verdana", 13)).grid(pady=10, row=0, column=0)
 
     Label(ventana, text="Cédula del empleado", fg="white", bg="#258787", font=('Verdana', 10, 'bold')).grid(pady=10, row=1, column=0, padx=10)
     Entry(ventana, textvariable=cedulaEmpleado).grid(pady=5, row=1, column=1)
-    Button(ventana, text="Calcular", command=buscar, width="20", bg="#5D00FF", relief="flat", fg="white", font=('Verdana', 10, 'bold'), cursor="hand2").grid(pady=20, row=2, column=0, columnspan=2)
+    Button(ventana, text="Atrás", width="20", bg="gray", fg="white", relief="flat", font=('Verdana', 10, 'bold'), cursor="hand2", command=volverAtras).grid(row=2, column=0)
+    Button(ventana, text="Calcular", command=buscar, width="20", bg="#5D00FF", relief="flat", fg="white", font=('Verdana', 10, 'bold'), cursor="hand2").grid(pady=20, row=2, column=1)
     
-    Label(ventana, text="Pensión", bg="#323232", fg="#fff", font=("Verdana", 10)).grid(pady=5, row=3, column=0)
-    Label(ventana, text="pension").grid(pady=5, row=3, column=1)
-    
-    Label(ventana, text="ICBF", bg="#323232", fg="#fff", font=("Verdana", 10)).grid(pady=5, row=4, column=0)
-    Label(ventana, text="ICBF").grid(pady=5, row=4, column=1)
-
-    Label(ventana, text="Sueldo", bg="#323232", fg="#fff", font=("Verdana", 10)).grid(pady=5, row=5, column=0)
-    Label(ventana, text="SUELDO").grid(pady=5, row=5, column=1)
-
-    Label(ventana, text="Auxilio transporte", bg="#323232", fg="#fff", font=("Verdana", 10)).grid(pady=5, row=6, column=0)
-    Label(ventana, text="AUX TRANSP").grid(pady=5, row=6, column=1)
-
-    Label(ventana, text="Bonificaciones", bg="#323232", fg="#fff", font=("Verdana", 10)).grid(pady=5, row=7, column=0)
-    Label(ventana, text="BONIFICACIONES").grid(pady=5, row=7, column=1)
-
-    Button(ventana, text="Atrás", width="20", bg="gray", fg="white", relief="flat", font=('Verdana', 10, 'bold'), cursor="hand2", command=volverAtras).grid(row=8, column=0)
-    Button(ventana, text="Imprimir", width="20", bg="gray", fg="white", relief="flat", font=('Verdana', 10, 'bold'), cursor="hand2", command=imprimir).grid(row=8, column=1)
    

@@ -1,5 +1,4 @@
 from tkinter import *
-from functions.comprobarLongitud import comprobarLongitud
 from tkinter import messagebox
 from nomina import Nomina
 
