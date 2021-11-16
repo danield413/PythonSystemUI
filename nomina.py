@@ -18,13 +18,12 @@ class Nomina:
 
     def añadirEmpleado(self, nuevoEmpleado):
         self.db.agregarTrabajador(nuevoEmpleado)
-        print("se añade")
-             
+        print("Nuevo empleado añadido")
 
-    def buscarEmpleadoPorCedula(self, cedula):
-        #se busca por cedula
-        print("se busca")
-
-    def getEmpleados(self):
-        #obtener empleados
-        print("xd")
+    def obtenerEmpleado(self, cedula):
+        empleado = self.db.obtenerTrabajador(cedula)
+        return empleado
+    
+    def obtenerInfoEmpleado(self, cedula):
+        info = self.db.obtenerInfoLaboralTrabajador(cedula)
+        return info

@@ -27,6 +27,7 @@ def ingresarInformacionLaboral(ventana, volverAtras):
         if(len(cedulaEmpleado.get()) > 7):
             if nomina.verificarSiYaExiste(cedulaEmpleado.get()):
                nomina.introducirInfoSalario([horasTrabajadas.get(),horasExtrasTrabajadas.get(),horasNoTrabajadas.get(),numeroVentas.get(),cedulaEmpleado.get()])
+               limpiar()
                messagebox.showinfo(title="Todo correcto", message="Informacion guardada!")
             else:
                 messagebox.showwarning(title="Cedula incorrecta", message="No existe!")
