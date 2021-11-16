@@ -46,7 +46,7 @@ def main():
         Label(text="Menú principal", bg="#323232", fg="white", font=('Arial', 13, 'bold')).grid(pady=10, row=0, column=0)
         Label(text=f"Fecha: {datetime.today().strftime('%Y-%m-%d')}", bg="#323232", fg="white", font=('Arial', 13, 'bold')).grid(pady=10, row=0, column=1)
         Button(ventana, text="Ingresar empleado", cursor="hand2", relief="flat", width="25", bg="#258187", fg="white", command = lambda: cambiarOpcion('INGRESAR_EMPLEADO'), font=('Arial', 13, 'bold')).grid(pady=5, padx=10,column=0, row=1)
-        Button(ventana, text="Ingresar salario", cursor="hand2", relief="flat", width="25", bg="#254087", fg="white", command = lambda: cambiarOpcion('INGRESAR_INFORMACION_LABORAL'), font=('Arial', 13, 'bold')).grid(pady=5,padx=10, column=1, row=1)
+        Button(ventana, text="Ingresar información laboral", cursor="hand2", relief="flat", width="25", bg="#254087", fg="white", command = lambda: cambiarOpcion('INGRESAR_INFORMACION_LABORAL'), font=('Arial', 13, 'bold')).grid(pady=5,padx=10, column=1, row=1)
         Button(ventana, text="Estadísticas", cursor="hand2",relief="flat", width="25", bg="#5D00FF", fg="white", command = lambda: cambiarOpcion('VER_ESTADISTICAS'), font=('Arial', 13, 'bold')).grid(pady=5,padx=10, column=0, row=2)
         Button(ventana, text="Imprimir salario", cursor="hand2",relief="flat", width="25", bg="#692587", fg="white", command = lambda: cambiarOpcion('IMPRIMIR_SALARIO'), font=('Arial', 13, 'bold')).grid(pady=5,padx=10, column=1, row=2)
         Button(ventana, text="Salir del programa", cursor="hand2",relief="flat", width="25", bg="#688725", fg="white", command=cerrarPrograma, font=('Arial', 13, 'bold')).grid(pady=20, row=3, column=0, columnspan=2)
@@ -66,9 +66,11 @@ def main():
                 messagebox.showinfo(title="Mensaje", message=msg)
                 limpiarVentana()
                 configuracionInicialVentana()
-
+            else:
+                usuario.set('')
+                password.set('')
+                messagebox.showerror(title="Inicio de sesión", message="Inicio de sesión incorrecto, intenta de nuevo")
         
-
         def olvidoPassword():
 
             usuario = StringVar()
@@ -81,6 +83,10 @@ def main():
                     codigo.set('')
                 elif(usuario.get() == '' or codigo.get() == ''):
                     messagebox.showwarning('Alerta', 'Debes llenar los campos')
+                else:
+                    usuario.set('')
+                    codigo.set('')
+                    messagebox.showinfo(title="Recuperación", message="Código incorrecto, intenta de nuevo")
 
             def volver():
                 limpiarVentana()
