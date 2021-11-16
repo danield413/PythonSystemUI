@@ -1,6 +1,7 @@
 from tkinter import *
 from functions.comprobarLongitud import comprobarLongitud
 from tkinter import messagebox
+from nomina import Nomina
 
 def ingresarInformacionLaboral(ventana, volverAtras):
     ventana.title('Ingresar información laboral del empleado')
@@ -22,9 +23,13 @@ def ingresarInformacionLaboral(ventana, volverAtras):
         numeroVentas.set('')
 
     def verificar():
-       if(len(cedulaEmpleado) > 7):
-           #se verifica que el empleado esté ya registradp
-            print('verificando...')
+        nomina = Nomina()
+        if(len(cedulaEmpleado.get()) > 7):
+            if nomina.verificarSiYaExiste(cedulaEmpleado.get()):
+               nomina.introducirInfoSalario([horasTrabajadas.get(),horasExtrasTrabajadas.get(),horasNoTrabajadas.get(),numeroVentas.get(),cedulaEmpleado.get()])
+               messagebox.showinfo(title="Todo correcto", message="Informacion guardada!")
+            else:
+                messagebox.showwarning(title="Cedula incorrecta", message="No existe!")
         
             
 
