@@ -1,6 +1,7 @@
 from tkinter import *
 from functions.comprobarLongitud import comprobarLongitud
 from tkinter import messagebox
+from nomina import Nomina
 
 def ingresarEmplado(ventana, volverAtras):
     ventana.title('Ingresar empleado')
@@ -35,6 +36,9 @@ def ingresarEmplado(ventana, volverAtras):
         afpV = comprobarLongitud('afp',afp.get())
 
         if(nombreV and telefonoV and cedulaV and codigoV and nitV and epsV and afpV):
+            N = Nomina()
+            array = [nombre.get(),telefono.get(),cedula.get(),codigo.get(),nit.get(),eps.get(),afp.get()]
+            N.añadirEmpleado(array)
             limpiar()
             messagebox.showinfo(title="Todo correcto", message="Nuevo empleado añadido!")
         else: 

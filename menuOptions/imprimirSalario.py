@@ -1,5 +1,5 @@
 from tkinter import *
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 
 def imprimirSalario(ventana, volverAtras):
     ventana.title('Estadísticas')
