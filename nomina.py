@@ -27,3 +27,7 @@ class Nomina:
     def obtenerInfoEmpleado(self, cedula):
         info = self.db.obtenerInfoLaboralTrabajador(cedula)
         return info
+
+    def obtenerHorasTrabajadas(self):
+        info = self.db.obtenerInformacionEstadisticas()
+        return info

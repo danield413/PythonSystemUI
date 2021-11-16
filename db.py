@@ -45,3 +45,18 @@ class Db:
         
         return infoTrabajador
         
+    def obtenerInformacionEstadisticas(self):
+        df = pd.read_csv('./DataBase/informacionLaboral.csv')
+        info = df.to_numpy()
+
+        countTrabajadas = 0
+        countExtras = 0
+        countNoTrabajadas = 0
+        
+        for i in range(len(info)):
+            countTrabajadas += info[i][0]
+            countExtras += info[i][1]
+            countNoTrabajadas += info[i][2]
+        
+        infoFormateada = np.array([countTrabajadas, countExtras, countNoTrabajadas])
+        return infoFormateada
