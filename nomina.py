@@ -1,3 +1,4 @@
+import numpy as np
 from db import Db
 
 class Nomina:
@@ -6,10 +7,15 @@ class Nomina:
         self.db = Db()
 
     def verificarSiYaExiste(self, cedula):
-        #se verifica si el empleado ya existe
-        print("se verifica si el usuario con la cedula 'x' ya está en la lista")
+        cedulas = np.array(self.db.obtenerCedulas()).tolist()
+        for i in cedulas:
+            if str(i) == str(cedula):
+                return True
+        return False
         
-    
+    def introducirInfoSalario(self,array):
+        self.db.agregarInfoSalario(array)
+
     def añadirEmpleado(self, nuevoEmpleado):
         self.db.agregarTrabajador(nuevoEmpleado)
         print("se añade")
