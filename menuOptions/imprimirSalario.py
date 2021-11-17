@@ -1,10 +1,10 @@
-from tkinter import *
-from tkinter import messagebox
-import numpy
-import functions.generarPDF as f
+from tkinter import * #Libreria para desarrollar interfaz grafica
+from tkinter import messagebox #Libreria para mostrar mensajes en la interfaz grafica
+import numpy #Libreria para desarrollar los arrays 
+import functions.generarPDF as f # Se importa la funcion para generar el pdf
+from nomina import Nomina #Se llama a la Clase nomina para manejar datos de los empleados
 
-from nomina import Nomina
-
+#Esta funcion es la encargada de toda la ventana de imprimir salario
 def imprimirSalario(ventana, volverAtras):
     ventana.title('Imprimir salario')
     ventana.geometry("650x500")
@@ -15,22 +15,12 @@ def imprimirSalario(ventana, volverAtras):
     n = Nomina()
     INFORMACION_BANCARIA = '**** - **** - ****'
 
+    #esta funcion guarda los datos en un array y llama a la funcion para guardar en pdf
     def imprimirEnArchivo(pension, icbf, sueldo, auxTransporte, bonificaciones, nombre, telefono, cedula, codigoTrabajador, horasTrabajadas, horasExtrasTrabajadas, horasNoTrabajadas, numeroVentas, total ):
-        dato = [nombre,
-                telefono,
-                codigoTrabajador,
-                horasTrabajadas,
-                horasExtrasTrabajadas,
-                horasNoTrabajadas,
-                numeroVentas,
-                bonificaciones,
-                icbf,
-                pension,
-                sueldo,
-                auxTransporte,
-                total]
+        dato = [nombre,telefono,codigoTrabajador,horasTrabajadas,horasExtrasTrabajadas,horasNoTrabajadas,numeroVentas,bonificaciones,icbf,pension,sueldo,auxTransporte,total]
         f.imprimir(dato,cedula)
 
+    #Se calcula el salario de el empleado
     def calcularSalario(empleado, infoLaboral):
         horasTrabajadas = infoLaboral[0]
         horasExtrasTrabajadas = infoLaboral[1]
@@ -51,7 +41,7 @@ def imprimirSalario(ventana, volverAtras):
         if(numeroVentas > 150): 
             #Mayores a 150
             bonificaciones + (sueldoInicial * .1)
-        #si el numero de ventas fue mayor a 100 y meno a 150, se bonifica el 5%
+        #si el numero de ventas fue mayor a 100 y menos a 150, se bonifica el 5%
         elif(numeroVentas > 100 and numeroVentas < 150):
             #mayores de 100 y menores de 150
             bonificaciones + (sueldoInicial * .05)
@@ -76,9 +66,11 @@ def imprimirSalario(ventana, volverAtras):
         icbf = sueldoInicial * 0.04
         sueldoInicial += (sueldoInicial * 0.04)
 
+        #se llama a las dos funciones una para mostrar y la otra para crear el desprendible
         imprimirEnPantalla(pension, icbf, SUELDO_BASICO, AUXILIO_TRANSPORTE, bonificaciones, sueldoInicial)
         imprimirEnArchivo(pension, icbf, SUELDO_BASICO , AUXILIO_TRANSPORTE, bonificaciones, empleado[0], empleado[1], empleado[2], empleado[3], horasTrabajadas, horasExtrasTrabajadas, horasNoTrabajadas, numeroVentas, sueldoInicial)
     
+    #Se busca si el empleado existe para empezar a calcular
     def buscar():
         #calcular salario
         if(len(cedulaEmpleado.get()) > 0 ):
@@ -97,6 +89,7 @@ def imprimirSalario(ventana, volverAtras):
                     messagebox.showerror(title="Error", message=msg)
         cedulaEmpleado.set('')
 
+    #Se muestra en pantalla la informacion optenida del salario
     def imprimirEnPantalla( pension, icbf, sueldoBasico, auxTrans, bonificaciones, total ):
         Label(ventana, text="Pensión", bg="#323232", fg="#fff", font=("Verdana", 10)).grid(pady=5, row=3, column=0)
         Label(ventana, text=f"$ {pension:,.2f}", bg="#323232", fg="#fff", font=('Verdana', 10, 'bold')).grid(pady=5, row=3, column=1)

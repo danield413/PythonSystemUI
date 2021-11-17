@@ -1,9 +1,9 @@
-from tkinter import *
+from tkinter import * #Libreria para desarrollar interfaz grafica
 import matplotlib.pyplot as plt
-import numpy as np
+import numpy as np #Libreria para desarrollar los arrays 
+from nomina import Nomina #Libreria para desarrollar los arrays 
 
-from nomina import Nomina
-
+#Funcion que se encarga de las estadisticas de la empresa
 def verEstadisticas(ventana, volverAtras):
     ventana.title('Estadísticas')
     ventana.geometry("650x500")
@@ -11,8 +11,9 @@ def verEstadisticas(ventana, volverAtras):
     ventana.config(bg="#323232") 
     n = Nomina()
 
+    #Funcion encargada del grafico de las horas, trabajadas, extra, no trabajadas
     def verGráfico():
-        n.obtenerHorasTrabajadas()
+        n.obtenerHorasTrabajadas() #Se obtine el total de horas
         
         np.random.seed(19680801)
 
@@ -22,7 +23,7 @@ def verEstadisticas(ventana, volverAtras):
 
         horas = ('Trabajadas', 'Extras trabajadas', 'No trabajadas')
         y_pos = np.arange(len(horas))
-        performance = n.obtenerHorasTrabajadas()
+        performance = n.obtenerHorasTrabajadas() 
         error = np.random.rand(len(horas))
 
         ax.barh(y_pos, performance, xerr=error, align='center')

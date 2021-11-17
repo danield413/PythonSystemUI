@@ -1,4 +1,5 @@
 
+# comprueba que la longitud de los datos este en sus rangos
 def comprobarLongitud(campo, dato):
     if(campo == 'nombre'):
         if(len(dato) < 5): return False

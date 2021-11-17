@@ -1,7 +1,8 @@
-from tkinter import *
-from tkinter import messagebox
-from nomina import Nomina
+from tkinter import * #Libreria para desarrollar interfaz grafica
+from tkinter import messagebox #Libreria para mostrar mensajes en la interfaz grafica
+from nomina import Nomina #Libreria para desarrollar los arrays 
 
+#Funcion encargada de mostrar toda la informacion para ingresar las horas del empleado
 def ingresarInformacionLaboral(ventana, volverAtras):
     ventana.title('Ingresar información laboral del empleado')
     ventana.geometry("650x500")
@@ -14,6 +15,7 @@ def ingresarInformacionLaboral(ventana, volverAtras):
     horasNoTrabajadas = IntVar()
     numeroVentas = IntVar()
 
+    #Limpia los campos donde son ingresados los datos
     def limpiar():
         cedulaEmpleado.set('')
         horasTrabajadas.set('')
@@ -21,6 +23,7 @@ def ingresarInformacionLaboral(ventana, volverAtras):
         horasNoTrabajadas.set('')
         numeroVentas.set('')
 
+    #Verifica que los datos son validos y añade en la BD
     def verificar():
         nomina = Nomina()
         if(len(cedulaEmpleado.get()) > 7):
