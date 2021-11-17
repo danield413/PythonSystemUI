@@ -5,6 +5,7 @@ import pandas as pd
 
 class Db:
     def __init__(self):
+        #Se inicializan los encabezados de la clase Db
         self.encabezadoTrabajador = ['Nombre','Telefono','Cedula','Codigo','Nit','EPS','AFP']
         self.encabezadoInfoSalario = ['Trabajadas','Extras','No Trabajadas','Ventas','Cedula']
 
@@ -60,3 +61,13 @@ class Db:
         
         infoFormateada = np.array([countTrabajadas, countExtras, countNoTrabajadas])
         return infoFormateada
+    
+    def iniciarSesion(self, usuario, password):
+        df = pd.read_csv('./DataBase/usuarios.csv')
+        info = df.to_numpy()
+        for i in range(len(info)):
+            if(info[i][0] == usuario):
+                if(info[i][1] == password):
+                    return True
+                else :
+                    return False

@@ -13,14 +13,13 @@ def verEstadisticas(ventana, volverAtras):
 
     def verGráfico():
         n.obtenerHorasTrabajadas()
-        # Fixing random state for reproducibility
+        
         np.random.seed(19680801)
 
 
         plt.rcdefaults()
         fig, ax = plt.subplots()
 
-        # Example data
         horas = ('Trabajadas', 'Extras trabajadas', 'No trabajadas')
         y_pos = np.arange(len(horas))
         performance = n.obtenerHorasTrabajadas()
@@ -29,9 +28,9 @@ def verEstadisticas(ventana, volverAtras):
         ax.barh(y_pos, performance, xerr=error, align='center')
         ax.set_yticks(y_pos)
         ax.set_yticklabels(horas)
-        ax.invert_yaxis()  # labels read top-to-bottom
+        ax.invert_yaxis()  
         ax.set_xlabel('Horas')
-        ax.set_title('How fast do you want to go today?')
+        ax.set_title('Gráfico - horas trabajadas, no trabajadas y extras')
 
         plt.show()
     
