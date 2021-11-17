@@ -1,8 +1,9 @@
-from tkinter import *
-from functions.comprobarLongitud import comprobarLongitud
-from tkinter import messagebox
-from nomina import Nomina
+from tkinter import * #Libreria para desarrollar interfaz grafica
+from functions.comprobarLongitud import comprobarLongitud #importa la funcion para 
+from tkinter import messagebox #Libreria para mostrar mensajes en la interfaz grafica
+from nomina import Nomina #Libreria para desarrollar los arrays 
 
+#Funcion que se encarga de toda la vista para ingresar mas empleados
 def ingresarEmplado(ventana, volverAtras):
     ventana.title('Ingresar empleado')
     ventana.geometry("650x500")
@@ -17,6 +18,7 @@ def ingresarEmplado(ventana, volverAtras):
     eps = StringVar()
     afp = StringVar()
 
+    #Limpia los campos donde son ingresados los datos
     def limpiar():
         nombre.set('')
         telefono.set('')
@@ -26,6 +28,7 @@ def ingresarEmplado(ventana, volverAtras):
         eps.set('')
         afp.set('')
 
+    #Verifica que los datos son validos y añade en la BD
     def verificar():
         nombreV = comprobarLongitud('nombre', nombre.get())
         telefonoV = comprobarLongitud('telefono', telefono.get())

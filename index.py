@@ -1,9 +1,10 @@
-from datetime import datetime
-from tkinter import *
-from tkinter import messagebox
-from db import Db
+from datetime import datetime #Libreria para obtener la fecha de hoy
+from tkinter import * #Libreria para desarrollar interfaz grafica
+from tkinter import messagebox #Libreria para mostrar mensajes en la interfaz grafica
+from db import Db #importacion de la clase DB que controla los archivos
 
-from menuOptions.imprimirSalario import imprimirSalario
+#importacion de una nueva vista en el menu
+from menuOptions.imprimirSalario import imprimirSalario 
 from menuOptions.ingresarEmpleado import ingresarEmplado
 from menuOptions.ingresarInformacionLaboral import ingresarInformacionLaboral
 from menuOptions.verEstadisticas import verEstadisticas
@@ -49,6 +50,7 @@ def main():
 
     #Esta función muestra el menú principal, cuando esta se llama los elementos de la ventana cambian 
     #dando paso al menú
+    #lambda es para pasar una funcion con sus parametros
     def configuracionInicialVentana():
         ventana.title("MENÚ")
         ventana.geometry("650x350")
@@ -106,10 +108,10 @@ def main():
     #Se ejecuta la ventana login, puesto que es la primera que debe aparecer
     ventanaLogin()
 
+    #la ventana mantiene activa y asi evita cierres
     ventana.mainloop()
 
 
-if __name__ == "__main__":
+if __name__ == "__main__": # Por defecto __name__ = a __main__
     #SE EJECUTA EL MÉTODO PRINCIPAL
     main()
-

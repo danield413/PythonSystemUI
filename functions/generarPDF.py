@@ -1,5 +1,9 @@
-from reportlab.pdfgen import canvas
+from reportlab.pdfgen import canvas #Libreria para crear un archivo pdf
 
+#Funcion para crear y un archivo pdf
+#Canvas -> crea el archivo css
+#drawString -> imprime en el pdf, parametros => posicion x, posicion y, contenido
+#save -> funcion para guardar el pdf
 def imprimir(dato,cedula):
     c = canvas.Canvas(f"./reportes/Empleado-{cedula}.pdf")
     c.drawString(100,690,f"NOMBRE: {dato[0]}")
