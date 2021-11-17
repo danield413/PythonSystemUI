@@ -2,6 +2,7 @@ from tkinter import *
 from tkinter import messagebox
 import numpy
 import pandas as pd
+import functions.generarPDF as f
 
 from nomina import Nomina
 #import matplotlib.pyplot as plt
@@ -17,27 +18,20 @@ def imprimirSalario(ventana, volverAtras):
     INFORMACION_BANCARIA = '**** - **** - ****'
 
     def imprimirEnArchivo(pension, icbf, sueldo, auxTransporte, bonificaciones, nombre, telefono, cedula, codigoTrabajador, horasTrabajadas, horasExtrasTrabajadas, horasNoTrabajadas, numeroVentas, total ):
-        # sueldo es el sueldo básico: 908526
-        # total es el sueldo total ya calculado: xxxxxxxx
-        #Aquí se imprime en excel o pdf
-        #POR EJEMPLO ASÍ:
-        #NOMBRE: PEDRO SANCHEZ 
-        ##CC: 100239123
-        #TELEFONO: 9321923923
-        #CÓDIGO DE TRABAJADOR: 20192302-12
-        #INFORMACION BANCARIA: **********
-        #INFORMACIÓN LABORAL:
-            #HORAS TRABAJADAS: 200
-            #HORAS EXTRAS TRABAJADAS: 25
-            #HORAS NO TRABAJADAS: 10
-            #NÚMERO DE VENTAS: 267
-            #BONIFICACIONES: 125.000
-            #ICBF : 36.000
-            #PENSION: 45.000
-        
-        #TOTAL A PAGAR: $ 100.547
-
-
+        dato = [nombre,
+                telefono,
+                codigoTrabajador,
+                horasTrabajadas,
+                horasExtrasTrabajadas,
+                horasNoTrabajadas,
+                numeroVentas,
+                bonificaciones,
+                icbf,
+                pension,
+                sueldo,
+                auxTransporte,
+                total]
+        f.imprimir(dato,cedula)
         print('x')
 
     def calcularSalario(empleado, infoLaboral):
@@ -108,22 +102,22 @@ def imprimirSalario(ventana, volverAtras):
 
     def imprimirEnPantalla( pension, icbf, sueldoBasico, auxTrans, bonificaciones, total ):
         Label(ventana, text="Pensión", bg="#323232", fg="#fff", font=("Verdana", 10)).grid(pady=5, row=3, column=0)
-        Label(ventana, text=f"$ {pension}", bg="#323232", fg="#fff", font=('Verdana', 10, 'bold')).grid(pady=5, row=3, column=1)
+        Label(ventana, text=f"$ {pension:,.2f}", bg="#323232", fg="#fff", font=('Verdana', 10, 'bold')).grid(pady=5, row=3, column=1)
         
         Label(ventana, text="ICBF", bg="#323232", fg="#fff", font=("Verdana", 10)).grid(pady=5, row=4, column=0)
-        Label(ventana, text=f"$ {icbf}", bg="#323232", fg="#fff", font=('Verdana', 10, 'bold')).grid(pady=5, row=4, column=1)
+        Label(ventana, text=f"$ {icbf:,.2f}", bg="#323232", fg="#fff", font=('Verdana', 10, 'bold')).grid(pady=5, row=4, column=1)
 
         Label(ventana, text="Sueldo", bg="#323232", fg="#fff", font=("Verdana", 10)).grid(pady=5, row=5, column=0)
-        Label(ventana, text=f"$ {sueldoBasico}", bg="#323232", fg="#fff", font=('Verdana', 10, 'bold')).grid(pady=5, row=5, column=1)
+        Label(ventana, text=f"$ {sueldoBasico:,.2f}", bg="#323232", fg="#fff", font=('Verdana', 10, 'bold')).grid(pady=5, row=5, column=1)
 
         Label(ventana, text="Auxilio transporte", bg="#323232", fg="#fff", font=("Verdana", 10)).grid(pady=5, row=6, column=0)
-        Label(ventana, text=f"$ {auxTrans}", bg="#323232", fg="#fff", font=('Verdana', 10, 'bold')).grid(pady=5, row=6, column=1)
+        Label(ventana, text=f"$ {auxTrans:,.2f}", bg="#323232", fg="#fff", font=('Verdana', 10, 'bold')).grid(pady=5, row=6, column=1)
 
         Label(ventana, text="Bonificaciones", bg="#323232", fg="#fff", font=("Verdana", 10)).grid(pady=5, row=7, column=0)
-        Label(ventana, text=f"$ {bonificaciones}", bg="#323232", fg="#fff", font=('Verdana', 10, 'bold')).grid(pady=5, row=7, column=1)
+        Label(ventana, text=f"$ {bonificaciones:,.2f}", bg="#323232", fg="#fff", font=('Verdana', 10, 'bold')).grid(pady=5, row=7, column=1)
 
         Label(ventana, text="Neto a pagar", bg="#323232", fg="#fff", font=("Verdana", 10)).grid(pady=5, row=7, column=0)
-        Label(ventana, text=f"$ {total}", bg="#323232", fg="#fff", font=('Verdana', 10, 'bold')).grid(pady=5, row=7, column=1)
+        Label(ventana, text=f"$ {total:,.2f}", bg="#323232", fg="#fff", font=('Verdana', 10, 'bold')).grid(pady=5, row=7, column=1)
 
     Label(ventana, text="Gastos Empresariales", bg="#323232", fg="white", font=("Verdana", 13)).grid(pady=10, row=0, column=0)
 
