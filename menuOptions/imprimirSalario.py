@@ -6,7 +6,7 @@ import functions.generarPDF as f
 from nomina import Nomina
 
 def imprimirSalario(ventana, volverAtras):
-    ventana.title('Estadísticas')
+    ventana.title('Imprimir salario')
     ventana.geometry("650x500")
     ventana.anchor("center")
     ventana.config(bg="#323232") 
