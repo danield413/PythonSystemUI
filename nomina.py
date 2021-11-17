@@ -18,7 +18,6 @@ class Nomina:
 
     def añadirEmpleado(self, nuevoEmpleado):
         self.db.agregarTrabajador(nuevoEmpleado)
-        print("Nuevo empleado añadido")
 
     def obtenerEmpleado(self, cedula):
         empleado = self.db.obtenerTrabajador(cedula)

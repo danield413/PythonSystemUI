@@ -1,23 +1,32 @@
 from datetime import datetime
 from tkinter import *
 from tkinter import messagebox
+from db import Db
 
 from menuOptions.imprimirSalario import imprimirSalario
 from menuOptions.ingresarEmpleado import ingresarEmplado
 from menuOptions.ingresarInformacionLaboral import ingresarInformacionLaboral
 from menuOptions.verEstadisticas import verEstadisticas
 
+#METODO PRINCIPAL DEL PROGRAMA
 def main():
+    #Se crean dos objetos de Tkinter y otro de Db ( una clase que maneja los datos .CSV )
     ventana = Tk()
+    db = Db()
 
+    #La función limpiarVentana destruye todos los elementos grid, para poder agregar
+    #nuevos elementos
     def limpiarVentana():
         list = ventana.grid_slaves()
         for l in list:
             l.destroy()   
 
+    #La función cerrarPrograma destruye la ventana y consigo el programa
     def cerrarPrograma():
         ventana.destroy()
 
+    #CambiarOpción recibe un tipo, dependiendo del tipo limpia la ventana y carga la configuración
+    #de la ventana deseada
     def cambiarOpcion(opcion):
         if(opcion == 'INGRESAR_EMPLEADO'):
             limpiarVentana()
@@ -32,11 +41,14 @@ def main():
             limpiarVentana()
             imprimirSalario(ventana, volverAtras)
 
+    #volverAtras, como su nombre dice devuelve al usuario al principio del menú ejecutando la función
+    #configuracionInicialVentana()
     def volverAtras():
         limpiarVentana()
         configuracionInicialVentana()
 
-    
+    #Esta función muestra el menú principal, cuando esta se llama los elementos de la ventana cambian 
+    #dando paso al menú
     def configuracionInicialVentana():
         ventana.title("MENÚ")
         ventana.geometry("650x350")
@@ -51,58 +63,32 @@ def main():
         Button(ventana, text="Imprimir salario", cursor="hand2",relief="flat", width="25", bg="#692587", fg="white", command = lambda: cambiarOpcion('IMPRIMIR_SALARIO'), font=('Arial', 13, 'bold')).grid(pady=5,padx=10, column=1, row=2)
         Button(ventana, text="Salir del programa", cursor="hand2",relief="flat", width="25", bg="#688725", fg="white", command=cerrarPrograma, font=('Arial', 13, 'bold')).grid(pady=20, row=3, column=0, columnspan=2)
 
+    #Esta función es la que primero se ejecuta al iniciar el programa, se encarga de manejar el login
+    #usando tkinter, la clase db que maneja los .csv.
     def ventanaLogin():
 
         usuario = StringVar()
         password = StringVar()
 
-        passwordUsuarioRoot = 'root'
-
         def verificar():
+            #Se verifica que no estén vacíos los campos
             if(usuario.get() == '' or password.get() == ''):
                 messagebox.showwarning(title="Advertencia", message="No dejes los campos vacíos")
-            elif(usuario.get() == 'root' and password.get() == passwordUsuarioRoot): 
-                msg = f"¡Bienvenid@ usuario {usuario.get()}"
-                messagebox.showinfo(title="Mensaje", message=msg)
-                limpiarVentana()
-                configuracionInicialVentana()
-            else:
-                usuario.set('')
-                password.set('')
-                messagebox.showerror(title="Inicio de sesión", message="Inicio de sesión incorrecto, intenta de nuevo")
-        
-        def olvidoPassword():
-
-            usuario = StringVar()
-            codigo = StringVar()
-
-            def generar():
-                if(usuario.get() == 'root' and codigo.get() == 'RESETPASS'):
-                    messagebox.showinfo(title="Recuperación", message=f"Tu contraseña es {passwordUsuarioRoot}")
-                    usuario.set('')
-                    codigo.set('')
-                elif(usuario.get() == '' or codigo.get() == ''):
-                    messagebox.showwarning('Alerta', 'Debes llenar los campos')
+                #sino se verifica que sean mayores a 0 en caracteres
+            elif(len(usuario.get()) > 0 and len(password.get()) > 0): 
+                    #si lo anterior pasa, se inicia sesión usando la clase db y pasandole los datos
+                    #esté metodo de esa clase retorna True (si es correcto ) o False (Si no lo es) 
+                if(db.iniciarSesion(usuario.get(), password.get())):
+                    msg = f"¡Bienvenid@ usuario {usuario.get()}"
+                    messagebox.showinfo(title="Mensaje", message=msg)
+                    #Se limpia la ventana y se cargan en la ventana los widgets del menú
+                    limpiarVentana()
+                    configuracionInicialVentana()
                 else:
+                    #si no puede iniciar sesión, se reestablecen los datos y se muestra un mensaje
                     usuario.set('')
-                    codigo.set('')
-                    messagebox.showinfo(title="Recuperación", message="Código incorrecto, intenta de nuevo")
-
-            def volver():
-                limpiarVentana()
-                ventanaLogin()
-            
-            limpiarVentana()
-            ventana.title('Recuperar contraseña')
-            ventana.resizable = False
-            Label(text="Recuperación", bg="#55476D", fg="white", font=('Arial', 15, 'bold')).grid(pady=10, row=0)
-            Label(ventana, text="Ingresar usuario", bg="#55476D", fg="white", font=('Arial', 11, 'bold')).grid(padx=5, pady=5, row=1, column=0)
-            Entry(ventana, textvariable=usuario).grid(padx=5, pady=5, row=1, column=1)
-            Label(ventana, text="Código de restauración", bg="#55476D", fg="white", font=('Arial', 11, 'bold')).grid(padx=5, pady=5, row=2, column=0)
-            Entry(ventana, textvariable=codigo).grid(padx=5, pady=5, row=2, column=1)
-
-            Button(text="Atrás", command = volver, width="15", relief="flat", cursor="hand2").grid(pady=5, row=3, column=0)
-            Button(text="Recordar contraseña", command = generar, bg="#00FFD8", cursor="hand2", font=('Arial', 10, 'bold')).grid(pady=5, row=3, column=1)
+                    password.set('')
+                    messagebox.showerror(title="Inicio de sesión", message="Inicio de sesión incorrecto, intenta de nuevo")
 
         ventana.title("Inicio de sesión")
         ventana.geometry("400x300")
@@ -116,13 +102,14 @@ def main():
 
         Button(text="Salir", command=lambda: ventana.destroy(), width="15", relief="flat", cursor="hand2").grid(pady=5, row=3, column=0)
         Button(text="Ingresar", command=verificar, width="15", relief="flat", bg="#00FFD8", fg="black", cursor="hand2", font=('Arial', 10, 'bold')).grid(pady=5, row=3, column=1)
-        Button(text="¿Olvidaste la contraseña?", relief="flat", bg="#55476D", fg="white", command=olvidoPassword, font=('Arial', 10, 'bold'), cursor="hand2").grid(row=4, column=0, columnspan=2)
 
+    #Se ejecuta la ventana login, puesto que es la primera que debe aparecer
     ventanaLogin()
 
     ventana.mainloop()
 
 
 if __name__ == "__main__":
+    #SE EJECUTA EL MÉTODO PRINCIPAL
     main()
 

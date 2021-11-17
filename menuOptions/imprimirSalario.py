@@ -1,11 +1,9 @@
 from tkinter import *
 from tkinter import messagebox
 import numpy
-import pandas as pd
 import functions.generarPDF as f
 
 from nomina import Nomina
-#import matplotlib.pyplot as plt
 
 def imprimirSalario(ventana, volverAtras):
     ventana.title('Estadísticas')
@@ -32,7 +30,6 @@ def imprimirSalario(ventana, volverAtras):
                 auxTransporte,
                 total]
         f.imprimir(dato,cedula)
-        print('x')
 
     def calcularSalario(empleado, infoLaboral):
         horasTrabajadas = infoLaboral[0]
