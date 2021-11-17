@@ -13,7 +13,6 @@ def imprimirSalario(ventana, volverAtras):
 
     cedulaEmpleado = StringVar()
     n = Nomina()
-    INFORMACION_BANCARIA = '**** - **** - ****'
 
     #esta funcion guarda los datos en un array y llama a la funcion para guardar en pdf
     def imprimirEnArchivo(pension, icbf, sueldo, auxTransporte, bonificaciones, nombre, telefono, cedula, codigoTrabajador, horasTrabajadas, horasExtrasTrabajadas, horasNoTrabajadas, numeroVentas, total ):

@@ -1,7 +1,7 @@
 from tkinter import * #Libreria para desarrollar interfaz grafica
-import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt #Librería para gráficos
 import numpy as np #Libreria para desarrollar los arrays 
-from nomina import Nomina #Libreria para desarrollar los arrays 
+from nomina import Nomina 
 
 #Funcion que se encarga de las estadisticas de la empresa
 def verEstadisticas(ventana, volverAtras):

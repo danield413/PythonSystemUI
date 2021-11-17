@@ -1,6 +1,6 @@
 from tkinter import * #Libreria para desarrollar interfaz grafica
 from tkinter import messagebox #Libreria para mostrar mensajes en la interfaz grafica
-from nomina import Nomina #Libreria para desarrollar los arrays 
+from nomina import Nomina
 
 #Funcion encargada de mostrar toda la informacion para ingresar las horas del empleado
 def ingresarInformacionLaboral(ventana, volverAtras):
